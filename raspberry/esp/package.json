@@ -1,0 +1,15 @@
+{
+  "name": "esp",
+  "version": "1.0.0",
+  "description": "connect to my esp device",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "vivlad",
+  "license": "ISC",
+  "dependencies": {
+    "node-telegram-bot-api": "^0.30.0",
+    "request": "^2.87.0"
+  }
+}
