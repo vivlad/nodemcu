@@ -4,8 +4,9 @@
   "description": "connect to my esp device",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dist": "webpack"
+    "dist": "webpack",
+    "start": "webpack-dev-server",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "vivlad",
   "license": "ISC",
@@ -13,7 +14,9 @@
     "node-telegram-bot-api": "^0.30.0",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
-    "request": "^2.87.0"
+    "request": "^2.87.0",
+    "webpack-cli": "^3.0.8",
+    "webpack-dev-server": "^3.1.4"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",

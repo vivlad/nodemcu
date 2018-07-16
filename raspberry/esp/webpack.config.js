@@ -7,6 +7,12 @@ const config = {
         path: path.resolve(__dirname, 'dist'),
         filename: 'bundle.js'
     },
+    devServer: {
+             hot: false,
+             publicPath: '/',
+             historyApiFallback: true,
+             contentBase: __dirname + '/dist'
+           },
     module: {
         rules: [
             {
