@@ -1,3 +1,4 @@
+"use strict";
 const TelegramBot = require('node-telegram-bot-api');
 const settings = require('./settings');
 const mcuQuery = require("./mcuQuery");
@@ -38,7 +39,7 @@ bot.on('callback_query', (callbackQuery) => {
     if(data == 'showData') {
         //TODO: should be better way
         mcuQuery("sensor/temp", temp => {
-            var message = "Temp: " + temp + " C; ";
+            let message = "Temp: " + temp + " C; ";
             mcuQuery("sensor/hum", hum => {
                 message += "Hum: " + hum;
                 bot.answerCallbackQuery(callbackQuery.id)
@@ -48,7 +49,28 @@ bot.on('callback_query', (callbackQuery) => {
     } else if (data == 'remoteControl') {
         //This should be added 
         bot.answerCallbackQuery(callbackQuery.id)
-            .then(() => bot.sendMessage(msg.chat.id, 'Coming soon'));
+            .then(() => {
+                const options = {
+                    reply_markup: JSON.stringify({
+                        inline_keyboard: [
+                        [{ text: 'Pin 5 on', callback_data: 'p_5_on' }],
+                        [{ text: 'Pin 5 off', callback_data: 'p_5_off' }],
+                        [{ text: 'Pin 6 on', callback_data: 'p_6_on' }],
+                        [{ text: 'Pin 6 off', callback_data: 'p_6_off' }],
+                        ]
+                    })
+                };
+                bot.answerCallbackQuery(callbackQuery.id)
+                    .then(() => bot.sendMessage(msg.chat.id, 'Choose action:', options));
+            });
+    } else if(data.slice(0,2) == 'p_'){
+        const matchess = data.match(/(\d)_(\w+)/);
+        const port = matchess[1];
+        const action = matchess[2];
+        mcuQuery("io/pin"+port+"/"+action, result => {
+            bot.answerCallbackQuery(callbackQuery.id)
+                .then(() => bot.sendMessage(msg.chat.id, result));
+        });
     } else {
         bot.answerCallbackQuery(callbackQuery.id)
             .then(() => bot.sendMessage(msg.chat.id, 'Incorrect reply'));
