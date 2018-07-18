@@ -4,25 +4,13 @@
   "description": "connect to my esp device",
   "main": "index.js",
   "scripts": {
-    "dist": "webpack",
-    "start": "webpack-dev-server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "vivlad",
   "license": "ISC",
   "dependencies": {
-    "node-telegram-bot-api": "^0.30.0",
-    "react": "^16.4.1",
-    "react-dom": "^16.4.1",
-    "request": "^2.87.0",
-    "webpack-cli": "^3.0.8",
-    "webpack-dev-server": "^3.1.4"
+    "node-telegram-bot-api": "^0.30.0"
   },
   "devDependencies": {
-    "babel-core": "^6.26.3",
-    "babel-loader": "^7.1.5",
-    "babel-preset-es2015": "^6.24.1",
-    "babel-preset-react": "^6.24.1",
-    "webpack": "^4.16.1"
   }
 }
