@@ -20,12 +20,18 @@ bot.onText(/\/echo (.+)/, (msg, match) => {
   bot.sendMessage(chatId, resp);
 });
 
-bot.onText(/хай/i, (msg, match) => {
+bot.onText(/start/i, (msg, match) => {
     const options = {
-        reply_markup: JSON.stringify({
+        /*reply_markup: JSON.stringify({
             inline_keyboard: [
-            [{ text: 'Show current data', callback_data: 'showData' }],
-            [{ text: 'Remote control', callback_data: 'remoteControl' }],
+            [{ text: 'Show sensors data', callback_data: 'showData' }],
+            [{ text: 'Another feature', callback_data: 'anotherFeature' }],
+            ]
+        })*/
+        reply_markup: JSON.stringify({
+            keyboard: [
+            [{ text: '📟 Show sensors data' }],
+            [{ text: 'Another feature' }],
             ]
         })
     };
@@ -33,7 +39,21 @@ bot.onText(/хай/i, (msg, match) => {
     bot.sendMessage(msg.chat.id, 'Choose action:', options);
 });
 
-bot.on('callback_query', (callbackQuery) => {
+bot.onText(/Show sensors data/i, (msg, match) => {
+    mcuQuery("sensor/temp", temp => {
+        let message = "🌡️ Temp: " + temp + " C; ";
+        mcuQuery("sensor/hum", hum => {
+            message += "🌧️ Hum: " + hum;
+            bot.sendMessage(msg.chat.id, message);
+        });
+    });
+});
+
+bot.onText(/Another feature/i, (msg, match) => {
+    bot.sendMessage(msg.chat.id, '🐉Here can be some feature🐉');
+});
+
+/*bot.on('callback_query', (callbackQuery) => {
     const msg = callbackQuery.message;
     const data = callbackQuery.data;
     if(data == 'showData') {
@@ -46,33 +66,11 @@ bot.on('callback_query', (callbackQuery) => {
                     .then(() => bot.sendMessage(msg.chat.id, message));
             });
         });
-    } else if (data == 'remoteControl') {
-        //This should be added 
+    } else if(data == 'anotherFeature') {
         bot.answerCallbackQuery(callbackQuery.id)
-            .then(() => {
-                const options = {
-                    reply_markup: JSON.stringify({
-                        inline_keyboard: [
-                        [{ text: 'Pin 5 on', callback_data: 'p_5_on' }],
-                        [{ text: 'Pin 5 off', callback_data: 'p_5_off' }],
-                        [{ text: 'Pin 6 on', callback_data: 'p_6_on' }],
-                        [{ text: 'Pin 6 off', callback_data: 'p_6_off' }],
-                        ]
-                    })
-                };
-                bot.answerCallbackQuery(callbackQuery.id)
-                    .then(() => bot.sendMessage(msg.chat.id, 'Choose action:', options));
-            });
-    } else if(data.slice(0,2) == 'p_'){
-        const matchess = data.match(/(\d)_(\w+)/);
-        const port = matchess[1];
-        const action = matchess[2];
-        mcuQuery("io/pin"+port+"/"+action, result => {
-            bot.answerCallbackQuery(callbackQuery.id)
-                .then(() => bot.sendMessage(msg.chat.id, result));
-        });
+            .then(() => bot.sendMessage(msg.chat.id, 'Here can be some feature'));
     } else {
         bot.answerCallbackQuery(callbackQuery.id)
             .then(() => bot.sendMessage(msg.chat.id, 'Incorrect reply'));
     }
-});
+});*/
